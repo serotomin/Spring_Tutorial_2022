@@ -1,14 +1,23 @@
 package hello.hellospring.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@Controller //스프링의 경우 컨트롤러 annotation 을 적어줘야 라이브러리를 import 해옴
+@Controller
 public class HelloController {
+    @GetMapping("hello") //GetMapping : HTTP GET 요청을 특정 핸들러 메서드에 맵핑하기 위한 annotation
+    //메서드
+    public String hello(Model model) {
+        model.addAttribute("data", "spring!!");
+        return "hello";
+    }
 
-
-    @GetMapping("hello") //웹 애플리케이션에서 /hello 로 들어오면 아래 메서드를 호출해줌
-    public String hello(Model model){
-        model.addAttribute
+    @GetMapping("hello-mvc") // e.g) localhost:8080/hello-mvc
+    //메서드
+    public String helloMvc(@RequestParam(value = "name") String name, Model model) { //외부에서 파라미터로 받음
+        model.addAttribute("name", name);
+        return "hello-template";  //hello-template.html 으로 return
     }
 }
