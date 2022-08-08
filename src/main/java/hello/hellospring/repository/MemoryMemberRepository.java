@@ -36,7 +36,4 @@ public class MemoryMemberRepository implements MemberRepository {
     public void clearStore() { //store 초기화
         store.clear();
     }
-
-
-
 }
