@@ -60,7 +60,7 @@ class MemoryMemberRepositoryTest {
         member2.setName("spring2");
         repository.save(member2);
 
-        List<Member> result = repository.findAll();
+        List<Member> result = repository.findAll(); // memory에 들어간 멤버 수 반환 e.g) spring1, spring2 -> 총 2개
 
         assertThat(result.size()).isEqualTo(2);
     }
