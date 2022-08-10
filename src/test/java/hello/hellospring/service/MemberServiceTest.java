@@ -1,7 +1,10 @@
 package hello.hellospring.service;
 
 import hello.hellospring.domain.Member;
+import hello.hellospring.repository.MemoryMemberRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -11,8 +14,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MemberServiceTest {
 
-    MemberService memberService = new MemberService();
+    //선언만함, 인스턴스 생성은 @BeforeEach 에서 테스트 동작 전 사전 실행
+    MemberService memberService;
+    //MemoryMemberRepository memberRepository = new MemoryMemberRepository();
+    MemoryMemberRepository memberRepository;
 
+    @BeforeEach
+    public void beforeEach() {
+        memberRepository = new MemoryMemberRepository();
+        memberService = new MemberService(memberRepository);
+    }
+
+    @AfterEach //Test가 종료되면 메모리 초기화
+    public void afterEach() {
+        memberRepository.clearStore();
+    }
 
     @Test
     void 회원가입() {
@@ -39,12 +55,18 @@ class MemberServiceTest {
 
         //when
         memberService.join(member1);
+        //assertThrows(IllegalStateException.class, () -> memberService.join(member1));
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(member1));
+        assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
+
+        /* try~catch 예외처리 사용
         try {
             memberService.join(member2);
             fail();
         } catch (IllegalStateException e) {
             assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
         }
+         */
 
         //then
     }
