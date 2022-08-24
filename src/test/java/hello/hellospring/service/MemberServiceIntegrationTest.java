@@ -18,6 +18,7 @@ class MemberServiceIntegrationTest {
     @Autowired MemberRepository memberRepository;
 
     @Test
+    //@Commit //롤백X
     void 회원가입() {
         //given
         Member member = new Member();
