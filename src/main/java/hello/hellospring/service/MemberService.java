@@ -35,10 +35,18 @@ public class MemberService {
         아래처럼 간단히 코드 작성
         */
 
-        //중복 회원 검증
-        validateDuplicateMember(member);
-        memberRepository.save(member);
-        return member.getId();
+        //AOP 추가 finally~
+        long start = System.currentTimeMillis();
+
+        try {
+            validateDuplicateMember(member); //중복 회원 검증 (핵심관심사항)
+            memberRepository.save(member);
+            return member.getId();
+        } finally { // AOP 적용이 필요한 부분 (공통관심사항)
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.println("join = " + timeMs + "ms");
+        }
     }
 
     private void validateDuplicateMember(Member member) {
@@ -50,7 +58,15 @@ public class MemberService {
 
     //전체 회원조회
     public List<Member> findMembers() { //findAll()의 리턴타입이 List였기 때문에 List<>로 선언함
-        return memberRepository.findAll(); //List 형태로 리턴
+        long start = System.currentTimeMillis();
+
+        try {
+            return memberRepository.findAll(); //List 형태로 리턴
+        } finally { // AOP 적용이 필요한 부분 (공통관심사항)
+          long finish = System.currentTimeMillis();
+          long timeMs = finish - start;
+          System.out.println("findMembers " + timeMs + "ms");
+        }
     }
 
     public Optional<Member> findOne (Long memberId){
