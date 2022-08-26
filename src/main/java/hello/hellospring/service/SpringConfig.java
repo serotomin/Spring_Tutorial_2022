@@ -1,6 +1,7 @@
 package hello.hellospring.service;
 
 
+import hello.hellospring.aop.TimeTraceAop;
 import hello.hellospring.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +43,13 @@ public class SpringConfig {
     public MemberService memberService(){
         return new MemberService(memberRepository);
     }
+
+    /* 스프링빈에 등록 안하고 AOP는 컴포넌트 스캔으로 활용
+    @Bean
+    public TimeTraceAop TimeTraceAop() {
+        return new TimeTraceAop();
+    }
+     */
 
 
     /* 스프링 데이터 JPA 수업에서 아래 코드 주석 처리
